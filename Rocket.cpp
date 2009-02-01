@@ -42,18 +42,9 @@ Rocket::~Rocket() {
 
 }
 
-void Rocket::Initialize() {
-}
+void Rocket::Handle(ProcessEventArg arg) {
+    float dt = arg.approx * 1000.0f;
 
-void Rocket::Deinitialize() {
-
-}
-
-bool Rocket::IsTypeOf(const std::type_info& inf) {
-    return ((typeid(Rocket) == inf) || (typeid(IModule) == inf));
-}
-
-void Rocket::Process(const float dt, const float percent) {
     if (!active) return;
     time += dt;
     

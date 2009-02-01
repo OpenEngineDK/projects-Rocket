@@ -9,7 +9,8 @@
 #ifndef _ROCKET_
 #define _ROCKET_
 
-#include <Core/IModule.h>
+#include <Core/IListener.h>
+#include <Core/EngineEvents.h>
 #include <Math/Vector.h>
 
 //forward declarations
@@ -20,12 +21,13 @@ namespace OpenEngine {
     }
 }
 
-using OpenEngine::Core::IModule;
-using OpenEngine::Scene::ISceneNode;
+using OpenEngine::Core::IListener;
+using OpenEngine::Core::ProcessEventArg;
 using OpenEngine::Math::Vector;
+using OpenEngine::Scene::ISceneNode;
 using OpenEngine::Scene::TransformationNode;
 
-class Rocket : public IModule {
+class Rocket : public IListener<ProcessEventArg> {
 private:
     bool active;
     TransformationNode* root;
@@ -38,10 +40,7 @@ public:
     Rocket();
     virtual ~Rocket();
 
-    void Initialize();
-    void Deinitialize();
-    bool IsTypeOf(const std::type_info& inf);
-    void Process(const float dt, const float percent);
+    void Handle(ProcessEventArg arg);
 
     void Fire();
     ISceneNode* GetSceneNode();

@@ -24,6 +24,7 @@
 #include <Sound/OpenALSoundSystem.h>
 #include <Sound/ISoundSystem.h>
 #include <Sound/ISound.h>
+#include <Scene/SceneNode.h>
 #include <Scene/SoundNode.h>
 #include <Sound/SoundRenderer.h>
 
@@ -70,17 +71,13 @@ public:
     ~Handler() {}
     
     void Handle(KeyboardEventArg arg) {
-        if (arg.type == KeyboardEventArg::PRESS) {
+        if (arg.type == EVENT_PRESS) {
             switch (arg.sym) {
             case KEY_f: rocket->Fire(); break;
             default: 
                 break;
             }
         }
-    }
-    
-    void BindToEventSystem() {
-        IKeyboard::keyEvent.Attach(*this);
     }
 };
 
@@ -99,9 +96,11 @@ Factory::Factory() {
     frustum->SetNear(1);
     viewport->SetViewingVolume(frustum);
 
-    renderer = new Renderer();
-    renderer->process.Attach(*(new RenderingView(*viewport)));
-    renderer->initialize.Attach(*(new TextureLoader()));
+    renderer = new Renderer(viewport);
+
+    // Add rendering initialization tasks
+    TextureLoader* tl = new TextureLoader();
+    renderer->InitializeEvent().Attach(*tl);
 }
 
 Factory::~Factory() {
@@ -111,21 +110,30 @@ Factory::~Factory() {
     delete renderer;
 }
 
-bool Factory::SetupEngine(IGameEngine& engine) {
+bool Factory::SetupEngine(IEngine& engine) {
+    engine.InitializeEvent().Attach(*frame);
+    engine.ProcessEvent().Attach(*frame);
+    engine.DeinitializeEvent().Attach(*frame);
+
+    engine.InitializeEvent().Attach(*renderer);
+    engine.ProcessEvent().Attach(*renderer);
+    engine.DeinitializeEvent().Attach(*renderer);
+
     // Setup input handling
     SDLInput* input = new SDLInput();
-    engine.AddModule(*input);
-
+    engine.InitializeEvent().Attach(*input);
+    engine.ProcessEvent().Attach(*input);
+    engine.DeinitializeEvent().Attach(*input);
 
     // Register the handler as a listener on up and down keyboard events.
-    MoveHandler* move_h = new MoveHandler(*camera);
-    engine.AddModule(*move_h);
-    move_h->BindToEventSystem();
-    QuitHandler* quit_h = new QuitHandler();
-    quit_h->BindToEventSystem();
+    MoveHandler* move_h = new MoveHandler(*camera,*input);
+    input->KeyEvent().Attach(*move_h);
+
+    QuitHandler* quit_h = new QuitHandler(engine);
+    input->KeyEvent().Attach(*quit_h);
 
     // Create scene root
-    SceneNode* root = new SceneNode();
+    ISceneNode* root = new SceneNode();
     this->renderer->SetSceneRoot(root);
 
     //First we set the resources directory
@@ -137,7 +145,7 @@ bool Factory::SetupEngine(IGameEngine& engine) {
     ResourceManager<IModelResource>::AddPlugin(new ColladaPlugin());
 
     ISoundSystem* openalsmgr = new OpenALSoundSystem(root, camera);
-    engine.AddModule(*openalsmgr);
+    engine.ProcessEvent().Attach(*openalsmgr);
 
 //     SoundRenderer* sr = new SoundRenderer();
 //     renderer->preProcess.Attach(*sr);
@@ -161,10 +169,10 @@ bool Factory::SetupEngine(IGameEngine& engine) {
     // setup rocket
     Rocket* r = new Rocket();
     root->AddNode(r->GetSceneNode());
-    engine.AddModule(*r);
+    engine.ProcessEvent().Attach(*r);
 
     Handler* h = new Handler(r);
-    h->BindToEventSystem();
+    input->KeyEvent().Attach(*h);
     
     // Return true to signal success.
     return true;

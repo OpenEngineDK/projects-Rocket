@@ -11,7 +11,7 @@
 #include <Meta/Config.h>
 #include <Logging/Logger.h>
 #include <Logging/StreamLogger.h>
-#include <Core/GameEngine.h>
+#include <Core/Engine.h>
 
 // Game factory
 #include "Factory.h"
@@ -36,8 +36,16 @@ int main(int argc, char** argv) {
     logger.info << "========= Running OpenEngine Test Project =========" << logger.end;
 
     // Start the engine.
-    IGameEngine& engine = GameEngine::Instance();
-    engine.Start(new Factory());
+    IEngine* engine = new Engine();
+    //@todo engine.SetTickTime(20); // for the MediPhysic to work properly
+
+    Factory* factory = new Factory();
+    factory->SetupEngine(*engine);
+
+    engine->Start();
+
+    delete factory;
+    delete engine;
 
     // Return when the engine stops.
     return EXIT_SUCCESS;

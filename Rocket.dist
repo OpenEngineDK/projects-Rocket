@@ -1,0 +1,47 @@
+# Distribution file for the Rocket project.
+
+# main repository
+darcs / http://openengine.dk/code/openengine
+darcs-dev / fh.daimi.au.dk:/users/cgd/code/openengine
+
+# project repository
+darcs /projects/Rocket http://openengine.dk/code/projects/Rocket
+darcs-dev /projects/Rocket fh.daimi.au.dk:/users/cgd/code/projects/Rocket
+
+# required extensions
+darcs /extensions/SDL                    http://openengine.dk/code/extensions/SDL
+darcs /extensions/OpenGLRenderer         http://openengine.dk/code/extensions/OpenGLRenderer
+darcs /extensions/TGAResource            http://openengine.dk/code/extensions/TGAResource
+darcs /extensions/ColladaResource        http://openengine.dk/code/extensions/ColladaResource
+darcs /extensions/OpenALSoundSystem      http://openengine.dk/code/extensions/OpenALSoundSystem
+darcs /extensions/GenericHandlers        http://openengine.dk/code/extensions/GenericHandlers
+darcs /extensions/VorbisResource         http://openengine.dk/code/extensions/VorbisResource
+darcs /extensions/Shapes                 http://openengine.dk/code/extensions/Shapes
+
+darcs-dev /extensions/SDL                    fh.daimi.au.dk:/users/cgd/code/extensions/SDL
+darcs-dev /extensions/OpenGLRenderer         fh.daimi.au.dk:/users/cgd/code/extensions/OpenGLRenderer
+darcs-dev /extensions/TGAResource            fh.daimi.au.dk:/users/cgd/code/extensions/TGAResource
+darcs-dev /extensions/ColladaResource        fh.daimi.au.dk:/users/cgd/code/extensions/ColladaResource
+darcs-dev /extensions/GenericHandlers        fh.daimi.au.dk:/users/cgd/code/extensions/GenericHandlers
+darcs-dev /extensions/OpenALSoundSystem      fh.daimi.au.dk:/users/cgd/code/extensions/OpenALSoundSystem
+darcs-dev /extensions/VorbisResource         fh.daimi.au.dk:/users/cgd/code/extensions/VorbisResource
+darcs-dev /extensions/Shapes                 fh.daimi.au.dk:/users/cgd/code/extensions/Shapes
+
+# windows libraries
+win32 /libraries http://openengine.dk/data/libraries/boost-win32.zip
+win32 /libraries http://openengine.dk/data/libraries/glew-win32.zip
+win32 /libraries http://openengine.dk/data/libraries/sdl-win32.zip
+win32 /libraries http://openengine.dk/data/libraries/dlls-win32.zip
+win   /libraries http://openengine.dk/data/libraries/colladadom2.1-win32.zip
+
+# darwin libraries
+darwin /libraries http://openengine.dk/data/libraries/colladadom2.1-osx-i32.zip
+darwin /libraries http://openengine.dk/data/libraries/pcre-osx-i32.zip
+darwin /libraries http://openengine.dk/data/libraries/pcrecpp-osx-i32.zip
+
+# linux libraries
+linux /libraries http://www.openengine.dk/data/libraries/collada-linux.tar.gz
+
+# project data
+any /projects/OERacer/data http://openengine.dk/data/models/rock.dae
+any /projects/OERacer/data http://openengine.dk/data/models/rock.tga

@@ -32,11 +32,11 @@ TARGET_LINK_LIBRARIES(${PROJECT_NAME}
   OpenEngine_Scene
   OpenEngine_Utils
   OpenEngine_Geometry
-  OpenEngine_Renderers_OpenGL
   # Extension dependencies
   Extensions_SDL
   Extensions_GenericHandlers
   Extensions_OpenALSoundSystem
+  Extensions_OpenGLRenderer
   Extensions_VorbisResource
   Extensions_Shapes
   Extensions_PropertyList
